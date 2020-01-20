@@ -27,17 +27,37 @@
     * 创建网格模型
     */
 
-    var geometry = new THREE.BoxGeometry(100,100,100)
+    var geometry = new THREE.BoxGeometry(30,30,30)
     var material = new THREE.MeshLambertMaterial({
-        color:'red',
+        color:'pink',
         transparent: true,
         opacity:0.3
     })
-    var mesh = new THREE.Mesh(geometry,material)
+    var mesh = new THREE.Mesh(geometry,material) 
+    // for(var i = 0;i<10;i++){
+    //     var againMesh = mesh.clone()
+    //     againMesh.translateX(i * 40)
+    //     scene.add(againMesh)
+    // }
+    mesh.translateY(100)
+    mesh.rotateX(120)
+    var location1 = new THREE.Vector3(100,100,100)
+    geometry.vertices.push(location1)
+    var face1 = new THREE.Face3(0,8,2)
+    geometry.faces[0] = face1
+    console.log(geometry)
+    scene.add(mesh)
+    var geometry2 = new THREE.BoxGeometry(40,40,40)
+    var material2 = new THREE.LineBasicMaterial({
+        color: 'purple',
+    })
+    var mesh2 = new THREE.Line(geometry2,material2)
+    mesh2.copy(mesh)
+    mesh2.translateX(100)
+    scene.add(mesh2)
     // var axis = new THREE.Vector3(2,1,1)
     // axis.normalize()
     // mesh.translateOnAxis(axis,100)
-    scene.add(mesh)
     
 
     /**
