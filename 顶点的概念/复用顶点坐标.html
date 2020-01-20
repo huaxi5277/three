@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../three.js-master/build/three.js"></script>
+    <script src="../three.js-master/examples/js/controls/OrbitControls.js"></script>
+    <style>
+    body{
+        margin: 0;
+        overflow: hidden;
+    }
+    </style>
+</head>
+<body>
+    <script>
+        /**
+        * 创建场景对象Scene 
+        */
+    var scene = new THREE.Scene()
+    /**
+    * 创建网格模型
+    */
+
+    // var geometry = new THREE.BoxGeometry(100,100,100)
+    var geometry = new THREE.BufferGeometry()   // 空的几何体  所有立体图形的基类
+    // 类型数组顶点数据
+    var vertices = new Float32Array([
+        0,0,0,
+        80,0,0,
+        80,80,0,
+        0,80,0
+    ])
+    var attribute = new THREE.BufferAttribute(vertices,3) 
+    // 设置几何体 attributes 属性的位置属性
+    geometry.attributes.position = attribute
+     // 设置几何体颜色属性
+    //  var colors = new Float32Array([
+       
+    // ])
+    // geometry.attributes.color = new THREE.BufferAttribute(colors,3);
+    // 法向量 
+    var normals = new Float32Array([
+      0,0,1,
+      0,0,1,
+      0,0,1,
+      0,0,1
+    ]) 
+    geometry.attributes.normal = new THREE.BufferAttribute(normals,3) // 3个数据为一个顶点
+
+    var indexes = new Uint16Array([
+        0,1,2,0,2,3
+    ])
+    geometry.index = new THREE. BufferAttribute(indexes,1)  // 1个数据为一个顶点
+    var material = new THREE.MeshLambertMaterial({
+        color:'orange',
+        // vertexColors : THREE.VertexColors,
+        size:5.0,
+        side:THREE.DoubleSide
+    })
+   var mesh = new THREE.Mesh(geometry,material)
+   scene.add(mesh)
+    // 点渲染模式 
+    // var material = new THREE.PointsMaterial({
+    //     // color:'red',
+    //     vertexColors:THREE.VertexColors,
+    //     size:5.0
+    // })
+    // var points = new THREE.Points(geometry,material)
+    // scene.add(points)
+    // mesh.translateX (120)
+    // 线条渲染模式 
+    // var material = new THREE.LineBasicMaterial({
+    //     // color:'black',
+    //     vertexColors:THREE.VertexColors,
+    //     size:5.0
+    // })  
+
+    var line = new THREE.Line(geometry,material)
+    scene.add(line)
+    /**
+    * 光源设置 
+    */
+    // 点光源 
+    var point = new THREE.PointLight(0xffffff)
+    point.position.set(400,200,300)
+    // point.position.set(0,0,600)
+    scene.add(point)
+    var ambient = new THREE.AmbientLight(0x444444)
+    // var ambient = new THREE.AmbientLight('black')
+    scene.add(ambient)
+   // 在没有光照的时候 无论物体是什么颜色 都是黑色 
+   // 相当于你把一个物体放入一个房间里面 房间里面没有光 一片漆黑
+
+  // 如果有环境光 相当于你在一个房间里面提供了光照 
+  // 这个颜色 照到 物体上  受 物体材料本身的影响 会显示出不同的颜色
+
+  // 如果有点光源 相当于在一点处提供光源 照在物体上 也是受颜色的影响 显示出不同的颜色  并且 物体反面的颜色会暗一些
+  
+  var axisHelper = new THREE.AxisHelper(250)
+  scene.add(axisHelper)
+    /**
+    * 相机设置 
+    */
+    var width = window.innerWidth
+    var height = window.innerWidth
+    var k = width/height
+    var s = 100    // 三维场景显示范围控制系数 系数越大 显示的范围越大 
+
+    //创建相机对象
+    var camera = new THREE.OrthographicCamera(-s*k,s*k,s,-s,1,1000);
+    camera.position.set(200,300,200)
+    camera.lookAt(scene.position)
+
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize(width,height)
+    renderer.setClearColor('#f2f2f2',1)
+    document.body.appendChild(renderer.domElement);
+   // 旋转 
+   function render(){
+    renderer.render(scene,camera)
+    // mesh.rotateY(0.01)
+    requestAnimationFrame(render)
+   }
+   // 创建控件对象 相机对象camera作为参数 控件可以监听鼠标的变化 
+   var controls = new THREE.OrbitControls(camera)
+   render()
+    // controls.addEventListener('change',render)
+    </script>
+</body>
+</html>
