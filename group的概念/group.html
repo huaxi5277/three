@@ -27,19 +27,36 @@
     * 创建网格模型
     */
 
-    var geometry = new THREE.BoxGeometry(30,30,30)
+    var geometry = new THREE.BoxGeometry(10,10,10)
     var material = new THREE.MeshLambertMaterial({
         color:0x0000ff,
         // transparent: true,
         // opacity:0.3
     })
-    var mesh = new THREE.Mesh(geometry,material)
     // var axis = new THREE.Vector3(2,1,1)
     // axis.normalize()
     // mesh.translateOnAxis(axis,100)
-    mesh.translateX(-50)
-    scene.add(mesh)
-
+    // mesh.translateX(-50)
+    var group = new THREE.Group()
+    for(let i = 0;i<10;i++){
+    var mesh = new THREE.Mesh(geometry,material)
+    mesh.translateX(i * 20)
+    group.add(mesh)
+    }
+    var group2 = new THREE.Group()
+    for(let i = 0;i<10;i++){
+        var newGroup = group.clone()
+        newGroup.translateY(i*20)
+    group2.add(newGroup)
+    }
+    scene.add(group2)
+    var group3 = new THREE.Group()
+    for(let i = 0;i<10;i++){
+        var againNewGroup = group2.clone()
+        againNewGroup.translateZ(i*20)
+        group3.add(againNewGroup)
+    }
+    scene.add(group3)
     var geometry2 = new THREE.BoxGeometry(30,30,30)
     var meterial2 = new THREE.MeshLambertMaterial({
         color: 0x0000ff,
@@ -49,7 +66,7 @@
     var mesh2 = new THREE.Mesh(geometry2,meterial2)
 
     mesh2.translateX(50)
-    scene.add(mesh2)
+    // scene.add(mesh2)
     
 
     /**
@@ -60,8 +77,8 @@
     // point.position.set(400,200,300)
     // scene.add(point)
 
-    // var ambient = new THREE.AmbientLight(0x444444)
-    // scene.add(ambient)
+    var ambient = new THREE.AmbientLight(0x444444)
+    scene.add(ambient)
    // 在没有光照的时候 无论物体是什么颜色 都是黑色 
    // 相当于你把一个物体放入一个房间里面 房间里面没有光 一片漆黑
 

@@ -27,41 +27,27 @@
     * 创建网格模型
     */
 
-    var geometry = new THREE.BoxGeometry(30,30,30)
+    var geometry = new THREE.BoxGeometry(10,10,10)
     var material = new THREE.MeshLambertMaterial({
-        color:0x0000ff,
-        // transparent: true,
-        // opacity:0.3
+        color:'red'
     })
     var mesh = new THREE.Mesh(geometry,material)
-    // var axis = new THREE.Vector3(2,1,1)
-    // axis.normalize()
-    // mesh.translateOnAxis(axis,100)
-    mesh.translateX(-50)
-    scene.add(mesh)
 
-    var geometry2 = new THREE.BoxGeometry(30,30,30)
-    var meterial2 = new THREE.MeshLambertMaterial({
-        color: 0x0000ff,
-        // transparent:true,
-        // opacity:0.5
-    })
-    var mesh2 = new THREE.Mesh(geometry2,meterial2)
-
-    mesh2.translateX(50)
-    scene.add(mesh2)
+    var group1 = new THREE.Group()
+    group1.add(mesh)
+    scene.add(group1)
     
 
     /**
     * 光源设置 
     */
     // 点光源 
-    // var point = new THREE.PointLight(0xffffff)
-    // point.position.set(400,200,300)
-    // scene.add(point)
+    var point = new THREE.PointLight(0xffffff)
+    point.position.set(400,200,300)
+    scene.add(point)
 
-    // var ambient = new THREE.AmbientLight(0x444444)
-    // scene.add(ambient)
+    var ambient = new THREE.AmbientLight(0x444444)
+    scene.add(ambient)
    // 在没有光照的时候 无论物体是什么颜色 都是黑色 
    // 相当于你把一个物体放入一个房间里面 房间里面没有光 一片漆黑
 
@@ -69,25 +55,8 @@
   // 这个颜色 照到 物体上  受 物体材料本身的影响 会显示出不同的颜色
 
   // 如果有点光源 相当于在一点处提供光源 照在物体上 也是受颜色的影响 显示出不同的颜色  并且 物体反面的颜色会暗一些
-  
 
-  // 聚光光源 
-   var spotLight = new THREE.SpotLight(0xffffff)
-   spotLight.position.set(0,100,0)
-   spotLight.angle = Math.PI / 6
-//   spotLight.target = mesh2            //  聚光灯有一个 target 指向一个对象   这个对象是一个Object3D对象  
-//    var targetObject3D = new THREE.Object3D()     自定义的形式 
-//    targetObject3D.translateX(-10)
-//    scene.add(targetObject3D)
-//    spotLight.target = targetObject3D
 
-  spotLight.target.position.set(40,0,0)    // 位置  
-  scene.add(spotLight.target)
-   scene.add(spotLight)
-   var spotLightHelper = new THREE.SpotLightHelper( spotLight );
-scene.add( spotLightHelper );
-   var axisHelper = new THREE.AxesHelper(250)
-   scene.add(axisHelper)
 
     /**
     * 相机设置 
@@ -112,15 +81,10 @@ scene.add( spotLightHelper );
 
    function render(){
     renderer.render(scene,camera)
-    // mesh.rotateY(0.01)
     requestAnimationFrame(render)
    }
-   
-   // 创建控件对象 相机对象camera作为参数 控件可以监听鼠标的变化
-
    var controls = new THREE.OrbitControls(camera)
    render()
-    // controls.addEventListener('change',render)
     </script>
 </body>
 </html>

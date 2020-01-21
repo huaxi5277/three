@@ -13,8 +13,6 @@
         margin: 0;
         overflow: hidden;
     }
-    
-    
     </style>
 </head>
 <body>
@@ -27,31 +25,30 @@
     * 创建网格模型
     */
 
-    var geometry = new THREE.BoxGeometry(30,30,30)
+    var geometry = new THREE.BoxGeometry(20,20,20)
     var material = new THREE.MeshLambertMaterial({
-        color:0x0000ff,
-        // transparent: true,
-        // opacity:0.3
+        color:'pink',
+        transparent: true,
+        opacity:0.5
     })
     var mesh = new THREE.Mesh(geometry,material)
     // var axis = new THREE.Vector3(2,1,1)
     // axis.normalize()
     // mesh.translateOnAxis(axis,100)
-    mesh.translateX(-50)
+    mesh.castShadow = true
     scene.add(mesh)
-
-    var geometry2 = new THREE.BoxGeometry(30,30,30)
-    var meterial2 = new THREE.MeshLambertMaterial({
-        color: 0x0000ff,
-        // transparent:true,
-        // opacity:0.5
-    })
-    var mesh2 = new THREE.Mesh(geometry2,meterial2)
-
-    mesh2.translateX(50)
-    scene.add(mesh2)
     
-
+    // 创建一个平面 
+   var planeGeometry = new THREE.PlaneGeometry(120,120,120)
+   var planeMaterial = new THREE.MeshLambertMaterial({
+    color: 0xf8f8ff,
+    side: THREE.DoubleSide
+   })
+   var plane = new THREE.Mesh(planeGeometry,planeMaterial)
+   scene.add(plane)
+   plane.rotateX(-Math.PI / 2)
+   plane.translateZ(-10)                  // 使用 translate  这样的方法 坐标系 与 css 3d 中坐标系 一致 
+   plane.receiveShadow = true             // 接收 平面   
     /**
     * 光源设置 
     */
@@ -59,36 +56,30 @@
     // var point = new THREE.PointLight(0xffffff)
     // point.position.set(400,200,300)
     // scene.add(point)
-
-    // var ambient = new THREE.AmbientLight(0x444444)
-    // scene.add(ambient)
+   // 环境光 
+    var ambient = new THREE.AmbientLight(0x444444)
+    scene.add(ambient)
    // 在没有光照的时候 无论物体是什么颜色 都是黑色 
    // 相当于你把一个物体放入一个房间里面 房间里面没有光 一片漆黑
-
   // 如果有环境光 相当于你在一个房间里面提供了光照 
   // 这个颜色 照到 物体上  受 物体材料本身的影响 会显示出不同的颜色
-
   // 如果有点光源 相当于在一点处提供光源 照在物体上 也是受颜色的影响 显示出不同的颜色  并且 物体反面的颜色会暗一些
-  
 
-  // 聚光光源 
-   var spotLight = new THREE.SpotLight(0xffffff)
-   spotLight.position.set(0,100,0)
-   spotLight.angle = Math.PI / 6
-//   spotLight.target = mesh2            //  聚光灯有一个 target 指向一个对象   这个对象是一个Object3D对象  
-//    var targetObject3D = new THREE.Object3D()     自定义的形式 
-//    targetObject3D.translateX(-10)
-//    scene.add(targetObject3D)
-//    spotLight.target = targetObject3D
-
-  spotLight.target.position.set(40,0,0)    // 位置  
-  scene.add(spotLight.target)
-   scene.add(spotLight)
-   var spotLightHelper = new THREE.SpotLightHelper( spotLight );
-scene.add( spotLightHelper );
+  // 聚光光源  
+    var spotLight = new THREE.SpotLight(0xffffff)
+    spotLight.position.set(110,100,0)
+    spotLight.angle = Math.PI / 6 
+    spotLight.castShadow = true
+    spotLight.shadow.camera.near = 1;
+    spotLight.shadow.camera.far = 300;
+    spotLight.shadow.camera.fov = 20
+    scene.add(spotLight)
+      // 辅助坐标系
    var axisHelper = new THREE.AxesHelper(250)
    scene.add(axisHelper)
 
+   var spotLightHelper = new THREE.SpotLightHelper( spotLight );
+   scene.add( spotLightHelper );
     /**
     * 相机设置 
     */
@@ -107,7 +98,7 @@ scene.add( spotLightHelper );
     renderer.setSize(width,height)
     renderer.setClearColor('#f2f2f2',1)
     document.body.appendChild(renderer.domElement);
-
+    renderer.shadowMap.enabled = true
    // 旋转 
 
    function render(){
